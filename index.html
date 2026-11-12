@@ -1,0 +1,1212 @@
+<!DOCTYPE html>
+<html lang="fr" class="dark scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sarobidy Raveloniaina | Développeur Full-Stack — Madagascar</title>
+    
+    <!-- Google Fonts: Inter & Fira Code -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['Fira Code', 'monospace'],
+                    },
+                    colors: {
+                        night: {
+                            950: '#040711',
+                            900: '#090e1a',
+                            800: '#111827',
+                            700: '#1e293b',
+                        },
+                        brand: {
+                            cyan: '#06b6d4',
+                            indigo: '#6366f1',
+                            blue: '#3b82f6'
+                        }
+                    },
+                    animation: {
+                        'pulse-slow': 'pulse 6s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'float': 'float 6s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Styles personnalisés pour Glassmorphism, Animations et Impression PDF -->
+    <style>
+        .glass-card {
+            background: rgba(255, 255, 255, 0.75);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border: 1px solid rgba(203, 213, 225, 0.6);
+            box-shadow: 0 8px 32px 0 rgba(15, 23, 42, 0.06);
+        }
+
+        .dark .glass-card {
+            background: rgba(15, 23, 42, 0.65);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(56, 189, 248, 0.14);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.35);
+        }
+
+        .glass-nav {
+            background: rgba(248, 250, 252, 0.85);
+            backdrop-filter: blur(16px);
+            border-bottom: 1px solid rgba(226, 232, 240, 0.8);
+        }
+
+        .dark .glass-nav {
+            background: rgba(4, 7, 17, 0.8);
+            backdrop-filter: blur(16px);
+            border-bottom: 1px solid rgba(56, 189, 248, 0.12);
+        }
+
+        .text-gradient {
+            background: linear-gradient(135deg, #06b6d4 0%, #3b82f6 50%, #818cf8 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .bg-grid-pattern {
+            background-size: 40px 40px;
+            background-image: 
+                linear-gradient(to right, rgba(99, 102, 241, 0.06) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(99, 102, 241, 0.06) 1px, transparent 1px);
+        }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(28px);
+            transition: all 0.75s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #040711;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1e293b;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #06b6d4;
+        }
+
+        @media print {
+            body {
+                background: #ffffff !important;
+                color: #0f172a !important;
+                font-size: 11pt !important;
+            }
+            .no-print, nav, footer, .bg-orb {
+                display: none !important;
+            }
+            .glass-card {
+                background: #ffffff !important;
+                border: 1px solid #cbd5e1 !important;
+                box-shadow: none !important;
+                break-inside: avoid;
+            }
+            .text-gradient {
+                -webkit-text-fill-color: #0284c7 !important;
+                color: #0284c7 !important;
+            }
+            section {
+                padding-top: 1.2rem !important;
+                padding-bottom: 1.2rem !important;
+            }
+            .reveal {
+                opacity: 1 !important;
+                transform: none !important;
+            }
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 dark:bg-night-950 dark:text-slate-100 font-sans antialiased selection:bg-cyan-500/30 selection:text-cyan-300 transition-colors duration-300 overflow-x-hidden">
+
+    <!-- Orbes lumineux d'arrière-plan -->
+    <div class="bg-orb fixed inset-0 pointer-events-none overflow-hidden z-0">
+        <div class="absolute -top-40 -left-40 w-96 h-96 bg-cyan-500/15 dark:bg-cyan-500/10 rounded-full blur-3xl animate-pulse-slow"></div>
+        <div class="absolute top-1/3 -right-32 w-[30rem] h-[30rem] bg-indigo-600/15 dark:bg-indigo-600/15 rounded-full blur-3xl animate-pulse-slow" style="animation-delay: 2s;"></div>
+        <div class="absolute bottom-0 left-1/4 w-96 h-96 bg-blue-600/10 rounded-full blur-3xl"></div>
+        <div class="absolute inset-0 bg-grid-pattern"></div>
+    </div>
+
+    <!-- Barre de Navigation -->
+    <header class="glass-nav fixed top-0 left-0 right-0 z-50 transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16 md:h-20">
+                <!-- Logo / Monogramme -->
+                <a href="#accueil" class="flex items-center gap-3 group">
+                    <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-cyan-500 to-indigo-600 flex items-center justify-center text-white font-mono font-bold text-lg shadow-lg shadow-cyan-500/25 group-hover:scale-105 transition-transform">
+                        SR
+                    </div>
+                    <div>
+                        <span class="font-bold text-base sm:text-lg tracking-tight block leading-none">Sarobidy<span class="text-cyan-500">.dev</span></span>
+                        <span class="text-[11px] font-mono text-slate-500 dark:text-slate-400">Développeur Full-Stack</span>
+                    </div>
+                </a>
+
+                <!-- Menu Desktop -->
+                <nav class="hidden lg:flex items-center gap-7 text-sm font-medium">
+                    <a href="#apropos" class="text-slate-600 dark:text-slate-300 hover:text-cyan-500 dark:hover:text-cyan-400 transition-colors">À propos</a>
+                    <a href="#experiences" class="text-slate-600 dark:text-slate-300 hover:text-cyan-500 dark:hover:text-cyan-400 transition-colors">Expériences</a>
+                    <a href="#projets" class="text-slate-600 dark:text-slate-300 hover:text-cyan-500 dark:hover:text-cyan-400 transition-colors">Projets</a>
+                    <a href="#competences" class="text-slate-600 dark:text-slate-300 hover:text-cyan-500 dark:hover:text-cyan-400 transition-colors">Compétences</a>
+                    <a href="#contact" class="text-slate-600 dark:text-slate-300 hover:text-cyan-500 dark:hover:text-cyan-400 transition-colors">Contact</a>
+                </nav>
+
+                <!-- Actions Droite -->
+                <div class="flex items-center gap-2 sm:gap-3">
+                    <!-- <a href="cv.pdf" class="hidden sm:inline-flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-semibold bg-slate-200/80 dark:bg-slate-800/90 hover:bg-cyan-500/15 text-slate-700 dark:text-cyan-300 border border-slate-300/60 dark:border-cyan-500/30 transition-all" title="Aperçu synthétique du CV">
+                        <i class="fa-solid fa-file-lines"></i>
+                        <span>Vue CV</span>
+                    </a> -->
+
+                    <!-- <button onclick="exportToPDF()" class="hidden md:inline-flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-semibold bg-gradient-to-r from-cyan-500 to-indigo-600 text-white shadow-md shadow-cyan-500/20 hover:opacity-95 transition-all" title="Imprimer ou enregistrer en PDF">
+                        <i class="fa-solid fa-file-pdf"></i>
+                        <span>PDF</span>
+                    </button> -->
+
+                    <button id="theme-toggle" aria-label="Changer de thème" class="p-2.5 rounded-xl bg-slate-200/80 dark:bg-slate-800/90 text-slate-700 dark:text-amber-400 hover:scale-105 transition-all border border-slate-300/50 dark:border-slate-700">
+                        <i id="theme-icon" class="fa-solid fa-sun text-base"></i>
+                    </button>
+
+                    <button id="mobile-menu-btn" aria-label="Ouvrir le menu" class="lg:hidden p-2.5 rounded-xl bg-slate-200/80 dark:bg-slate-800/90 text-slate-700 dark:text-slate-200">
+                        <i class="fa-solid fa-bars text-lg"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Menu Mobile Déroulant -->
+        <div id="mobile-menu" class="hidden lg:hidden px-4 pt-2 pb-5 space-y-2 border-t border-slate-200 dark:border-slate-800 bg-white/95 dark:bg-night-900/95 backdrop-blur-xl">
+            <a href="#apropos" class="mobile-link block px-3 py-2.5 rounded-xl text-sm font-medium hover:bg-cyan-500/10 hover:text-cyan-400">À propos &amp; Diplômes</a>
+            <a href="#experiences" class="mobile-link block px-3 py-2.5 rounded-xl text-sm font-medium hover:bg-cyan-500/10 hover:text-cyan-400">Expériences Professionnelles</a>
+            <a href="#projets" class="mobile-link block px-3 py-2.5 rounded-xl text-sm font-medium hover:bg-cyan-500/10 hover:text-cyan-400">Projets Professionnels</a>
+            <a href="#competences" class="mobile-link block px-3 py-2.5 rounded-xl text-sm font-medium hover:bg-cyan-500/10 hover:text-cyan-400">Compétences Techniques</a>
+            <a href="#contact" class="mobile-link block px-3 py-2.5 rounded-xl text-sm font-medium hover:bg-cyan-500/10 hover:text-cyan-400">Contact</a>
+            <div class="pt-2 flex gap-2">
+                <button onclick="openCvModal()" class="flex-1 py-2.5 px-3 rounded-xl text-xs font-semibold bg-slate-200 dark:bg-slate-800 text-center">
+                    <i class="fa-solid fa-file-lines mr-1"></i> Vue Rapide CV
+                </button>
+                <button onclick="exportToPDF()" class="flex-1 py-2.5 px-3 rounded-xl text-xs font-semibold bg-gradient-to-r from-cyan-500 to-indigo-600 text-white text-center">
+                    <i class="fa-solid fa-print mr-1"></i> Exporter PDF
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="relative z-10">
+        <!-- 1. HERO SECTION -->
+        <section id="accueil" class="pt-28 pb-20 md:pt-36 md:pb-28 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+                <!-- Colonne Gauche : Pitch & CTA -->
+                <div class="lg:col-span-7 space-y-6">
+                    <div class="inline-flex flex-wrap items-center gap-3 px-4 py-2 rounded-full glass-card text-xs font-mono">
+                        <span class="flex items-center gap-2 text-emerald-600 dark:text-emerald-400 font-semibold">
+                            <span class="relative flex h-2.5 w-2.5">
+                                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                                <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
+                            </span>
+                            Disponible pour opportunités &amp; projets
+                        </span>
+                        <span class="text-slate-400">|</span>
+                        <span class="text-slate-600 dark:text-slate-300 flex items-center gap-1.5">
+                            <i class="fa-solid fa-location-dot text-cyan-500"></i> Anosy Avaratra, Antananarivo
+                        </span>
+                    </div>
+
+                    <div>
+                        <p class="font-mono text-sm sm:text-base text-cyan-600 dark:text-cyan-400 font-semibold mb-2">
+                            Sarobidy Mbolatianasoa Raveloniaina
+                        </p>
+                        <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-[1.12]">
+                            Développeur Web <span class="text-gradient">Full-Stack</span>
+                        </h1>
+                    </div>
+
+                    <p class="text-base sm:text-lg text-slate-600 dark:text-slate-300 leading-relaxed max-w-2xl">
+                        Développeur Web fort de <strong class="text-slate-900 dark:text-white">4 ans d'expérience</strong> alliant exigence technique et vision produit pour concevoir des applications web sur mesure et scalables. Accoutumé aux méthodes Agiles, je place l'expérience utilisateur et la création de valeur business au cœur de chaque projet digital.
+                    </p>
+
+                    <!-- Boutons d'action -->
+                    <div class="flex flex-wrap items-center gap-4 pt-2 no-print">
+                        <a href="#projets" class="px-6 py-3.5 rounded-xl font-semibold text-sm text-white bg-gradient-to-r from-cyan-500 via-blue-600 to-indigo-600 shadow-lg shadow-cyan-500/25 hover:shadow-cyan-500/40 hover:-translate-y-0.5 transition-all flex items-center gap-2">
+                            <span>Découvrir mes projets</span>
+                            <i class="fa-solid fa-arrow-right"></i>
+                        </a>
+                        <a href="cv.pdf" class="px-6 py-3.5 rounded-xl font-semibold text-sm glass-card hover:border-cyan-500/50 text-slate-800 dark:text-white hover:-translate-y-0.5 transition-all flex items-center gap-2">
+                            <i class="fa-solid fa-file-lines text-cyan-500"></i>
+                            <span>Aperçu CV</span>
+                        </a>
+                        <a href="#contact" class="px-5 py-3.5 rounded-xl font-semibold text-sm text-slate-600 dark:text-slate-300 hover:text-cyan-500 dark:hover:text-cyan-400 transition-colors">
+                            Me contacter
+                        </a>
+                    </div>
+
+                    <!-- Coordonnées directes & Chiffres Clés -->
+                    <div class="pt-6 border-t border-slate-200/80 dark:border-slate-800/80 flex flex-wrap items-center justify-between gap-6">
+                        <div class="flex items-center gap-3 no-print">
+                            <a href="mailto:sarobidymbolatiana@gmail.com" aria-label="Email" title="sarobidymbolatiana@gmail.com" class="w-11 h-11 rounded-xl glass-card flex items-center justify-center text-slate-700 dark:text-slate-300 hover:text-cyan-500 hover:border-cyan-500/40 transition-all">
+                                <i class="fa-solid fa-envelope text-lg"></i>
+                            </a>
+                            <a href="tel:+261343296712" aria-label="Téléphone" title="034 32 967 12" class="w-11 h-11 rounded-xl glass-card flex items-center justify-center text-slate-700 dark:text-slate-300 hover:text-emerald-500 hover:border-emerald-500/40 transition-all">
+                                <i class="fa-solid fa-phone text-lg"></i>
+                            </a>
+                            <a href="https://github.com" target="_blank" rel="noopener noreferrer" aria-label="GitHub" class="w-11 h-11 rounded-xl glass-card flex items-center justify-center text-slate-700 dark:text-slate-300 hover:text-indigo-400 hover:border-indigo-400/40 transition-all">
+                                <i class="fa-brands fa-github text-xl"></i>
+                            </a>
+                        </div>
+
+                        <div class="flex items-center gap-6 sm:gap-8">
+                            <div>
+                                <div class="text-2xl font-extrabold text-gradient">4 ans</div>
+                                <div class="text-xs text-slate-500 dark:text-slate-400 font-medium">Expérience Web</div>
+                            </div>
+                            <div class="h-8 w-px bg-slate-200 dark:bg-slate-800"></div>
+                            <div>
+                                <div class="text-2xl font-extrabold text-gradient">Master II</div>
+                                <div class="text-xs text-slate-500 dark:text-slate-400 font-medium">Génie Logiciel</div>
+                            </div>
+                            <div class="h-8 w-px bg-slate-200 dark:bg-slate-800"></div>
+                            <div>
+                                <div class="text-2xl font-extrabold text-gradient">2024</div>
+                                <div class="text-xs text-slate-500 dark:text-slate-400 font-medium">Lauréat Miary Digital</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Colonne Droite : Carte Profil Technique -->
+                <div class="lg:col-span-5 animate-float">
+                    <div class="glass-card rounded-2xl p-5 sm:p-6 relative overflow-hidden">
+                        <div class="flex items-center justify-between pb-4 mb-4 border-b border-slate-200/70 dark:border-slate-700/70">
+                            <div class="flex items-center gap-2">
+                                <span class="w-3 h-3 rounded-full bg-rose-500"></span>
+                                <span class="w-3 h-3 rounded-full bg-amber-500"></span>
+                                <span class="w-3 h-3 rounded-full bg-emerald-500"></span>
+                            </div>
+                            <span class="text-xs font-mono text-slate-500 dark:text-slate-400">sarobidy.profile.json</span>
+                            <span class="px-2 py-0.5 text-[10px] font-mono rounded bg-cyan-500/15 text-cyan-600 dark:text-cyan-400 border border-cyan-500/30">Full-Stack</span>
+                        </div>
+
+                        <pre class="font-mono text-xs sm:text-sm leading-relaxed overflow-x-auto text-slate-700 dark:text-slate-300"><code>{
+  <span class="text-indigo-500 dark:text-indigo-400">"name"</span>: <span class="text-emerald-600 dark:text-emerald-400">"Sarobidy M. Raveloniaina"</span>,
+  <span class="text-indigo-500 dark:text-indigo-400">"role"</span>: <span class="text-emerald-600 dark:text-emerald-400">"Développeur Full-Stack"</span>,
+  <span class="text-indigo-500 dark:text-indigo-400">"location"</span>: <span class="text-emerald-600 dark:text-emerald-400">"Antananarivo, Madagascar"</span>,
+  <span class="text-indigo-500 dark:text-indigo-400">"stack"</span>: {
+    <span class="text-cyan-600 dark:text-cyan-400">"backend"</span>: [<span class="text-emerald-600 dark:text-emerald-400">"PHP"</span>, <span class="text-emerald-600 dark:text-emerald-400">"Laravel"</span>, <span class="text-emerald-600 dark:text-emerald-400">"Symfony"</span>, <span class="text-emerald-600 dark:text-emerald-400">"Java"</span>],
+    <span class="text-cyan-600 dark:text-cyan-400">"frontend"</span>: [<span class="text-emerald-600 dark:text-emerald-400">"React"</span>, <span class="text-emerald-600 dark:text-emerald-400">"JavaScript"</span>, <span class="text-emerald-600 dark:text-emerald-400">"Bootstrap"</span>],
+    <span class="text-cyan-600 dark:text-cyan-400">"database"</span>: [<span class="text-emerald-600 dark:text-emerald-400">"PostgreSQL"</span>, <span class="text-emerald-600 dark:text-emerald-400">"MySQL"</span>],
+    <span class="text-cyan-600 dark:text-cyan-400">"devops"</span>: [<span class="text-emerald-600 dark:text-emerald-400">"DigitalOcean"</span>, <span class="text-emerald-600 dark:text-emerald-400">"CyberPanel"</span>, <span class="text-emerald-600 dark:text-emerald-400">"Ubuntu"</span>]
+  },
+  <span class="text-indigo-500 dark:text-indigo-400">"award"</span>: <span class="text-emerald-600 dark:text-emerald-400">"Lauréat Miary Digital 2024"</span>
+}</code></pre>
+
+                        <div class="mt-5 pt-4 border-t border-slate-200/70 dark:border-slate-700/70 grid grid-cols-3 gap-2 text-center">
+                            <div class="p-2 rounded-xl bg-slate-100/80 dark:bg-slate-800/70">
+                                <i class="fa-solid fa-layer-group text-cyan-500 mb-1"></i>
+                                <div class="text-[11px] font-semibold">SaaS &amp; FinTech</div>
+                            </div>
+                            <div class="p-2 rounded-xl bg-slate-100/80 dark:bg-slate-800/70">
+                                <i class="fa-solid fa-diagram-project text-indigo-500 mb-1"></i>
+                                <div class="text-[11px] font-semibold">Méthodes Agiles</div>
+                            </div>
+                            <div class="p-2 rounded-xl bg-slate-100/80 dark:bg-slate-800/70">
+                                <i class="fa-solid fa-cloud text-blue-500 mb-1"></i>
+                                <div class="text-[11px] font-semibold">Cloud &amp; VPS</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 2. À PROPOS, LANGUES, SOFT SKILLS & FORMATIONS -->
+        <section id="apropos" class="py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto reveal">
+            <div class="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-4">
+                <div>
+                    <span class="font-mono text-xs uppercase tracking-widest text-cyan-500 font-semibold">01 // Profil &amp; Cursus</span>
+                    <h2 class="text-3xl sm:text-4xl font-bold mt-2">À propos &amp; Formations</h2>
+                </div>
+                <p class="text-sm text-slate-600 dark:text-slate-400 max-w-md">
+                    Un parcours académique solide en génie logiciel et informatique de gestion, complété par 4 années d'expérience terrain.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                <!-- Carte Présentation, Langues & Atouts -->
+                <div class="lg:col-span-7 glass-card rounded-2xl p-6 sm:p-8 flex flex-col justify-between space-y-6">
+                    <div class="space-y-4">
+                        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-lg bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 text-xs font-semibold">
+                            <i class="fa-solid fa-code"></i> Exigence Technique &amp; Vision Produit
+                        </div>
+                        <h3 class="text-2xl font-bold leading-snug">
+                            Conception d'applications web sur mesure, sécurisées et orientées valeur métier.
+                        </h3>
+                        <p class="text-slate-600 dark:text-slate-300 leading-relaxed text-sm sm:text-base">
+                            Titulaire d'un <strong class="text-slate-900 dark:text-white">Master II en Informatique (Base de données et génie logiciel)</strong> obtenu à l'IS-INFO Ampasamadinika, j'interviens sur l'ensemble du cycle de vie logiciel : modélisation UML, architecture de bases de données relationnelles, développement backend (Laravel/Symfony), intégration frontend (React) et déploiement sur serveurs Cloud.
+                        </p>
+                    </div>
+
+                    <!-- Langues & Qualités -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-4 border-t border-slate-200/70 dark:border-slate-700/70">
+                        <div class="p-4 rounded-xl bg-slate-100/70 dark:bg-slate-800/50 space-y-2">
+                            <div class="text-xs font-mono uppercase tracking-wider text-cyan-600 dark:text-cyan-400 font-bold">
+                                <i class="fa-solid fa-language mr-1.5"></i> Langues
+                            </div>
+                            <ul class="text-xs sm:text-sm space-y-1 text-slate-700 dark:text-slate-300">
+                                <li><strong>Malagasy :</strong> Langue maternelle</li>
+                                <li><strong>Français :</strong> Lu, écrit, parlé</li>
+                                <li><strong>Anglais :</strong> Élémentaire (technique)</li>
+                            </ul>
+                        </div>
+
+                        <div class="p-4 rounded-xl bg-slate-100/70 dark:bg-slate-800/50 space-y-2">
+                            <div class="text-xs font-mono uppercase tracking-wider text-indigo-600 dark:text-indigo-400 font-bold">
+                                <i class="fa-solid fa-sparkles mr-1.5"></i> Atouts &amp; Savoir-être
+                            </div>
+                            <div class="flex flex-wrap gap-1.5 pt-1">
+                                <span class="px-2.5 py-1 rounded-md text-xs bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700">Travail en équipe</span>
+                                <span class="px-2.5 py-1 rounded-md text-xs bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700">Sens de l'organisation</span>
+                                <span class="px-2.5 py-1 rounded-md text-xs bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700">Capacité d'adaptation</span>
+                                <span class="px-2.5 py-1 rounded-md text-xs bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700">Dynamique</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Colonne Diplômes -->
+                <div class="lg:col-span-5 space-y-4">
+                    <!-- Master II -->
+                    <div class="glass-card rounded-2xl p-5 border-l-4 border-l-cyan-500 hover:-translate-y-1 transition-transform">
+                        <div class="flex items-center justify-between gap-2 mb-2">
+                            <span class="px-2.5 py-0.5 rounded-full text-xs font-mono font-semibold bg-cyan-500/15 text-cyan-600 dark:text-cyan-400">
+                                2023
+                            </span>
+                            <span class="text-xs font-mono text-slate-500 dark:text-slate-400">
+                                IS-INFO Ampasamadinika
+                            </span>
+                        </div>
+                        <h4 class="text-base sm:text-lg font-bold text-slate-900 dark:text-white">Master II en Informatique</h4>
+                        <p class="text-xs sm:text-sm text-cyan-600 dark:text-cyan-400 font-medium mt-1">
+                            Base de données et génie logiciel
+                        </p>
+                    </div>
+
+                    <!-- Licence -->
+                    <div class="glass-card rounded-2xl p-5 border-l-4 border-l-indigo-500 hover:-translate-y-1 transition-transform">
+                        <div class="flex items-center justify-between gap-2 mb-2">
+                            <span class="px-2.5 py-0.5 rounded-full text-xs font-mono font-semibold bg-indigo-500/15 text-indigo-600 dark:text-indigo-400">
+                                2021
+                            </span>
+                            <span class="text-xs font-mono text-slate-500 dark:text-slate-400">
+                                IS-INFO Ampasamadinika
+                            </span>
+                        </div>
+                        <h4 class="text-base sm:text-lg font-bold text-slate-900 dark:text-white">Licence en Informatique</h4>
+                        <p class="text-xs sm:text-sm text-indigo-600 dark:text-indigo-400 font-medium mt-1">
+                            Informatique de gestion
+                        </p>
+                    </div>
+
+                    <!-- Baccalauréat -->
+                    <div class="glass-card rounded-2xl p-5 border-l-4 border-l-blue-500 hover:-translate-y-1 transition-transform">
+                        <div class="flex items-center justify-between gap-2 mb-2">
+                            <span class="px-2.5 py-0.5 rounded-full text-xs font-mono font-semibold bg-blue-500/15 text-blue-600 dark:text-blue-400">
+                                2013
+                            </span>
+                            <span class="text-xs font-mono text-slate-500 dark:text-slate-400">
+                                Lycée privé idéal Antsofinondry
+                            </span>
+                        </div>
+                        <h4 class="text-base sm:text-lg font-bold text-slate-900 dark:text-white">Baccalauréat Général</h4>
+                        <p class="text-xs sm:text-sm text-blue-600 dark:text-blue-400 font-medium mt-1">
+                            Série D — Mention Assez Bien
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. EXPÉRIENCES PROFESSIONNELLES -->
+        <section id="experiences" class="py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto reveal">
+            <div class="flex flex-col md:flex-row md:items-end justify-between mb-14 gap-4">
+                <div>
+                    <span class="font-mono text-xs uppercase tracking-widest text-cyan-500 font-semibold">02 // Parcours Professionnel</span>
+                    <h2 class="text-3xl sm:text-4xl font-bold mt-2">Expériences Professionnelles</h2>
+                </div>
+                <p class="text-sm text-slate-600 dark:text-slate-400 max-w-md">
+                    4 années d'expérience en développement Backend &amp; Frontend, architecture Cloud et leadership technique.
+                </p>
+            </div>
+
+            <div class="relative border-l-2 border-cyan-500/30 ml-3 sm:ml-6 space-y-10">
+                
+                <!-- Expérience 1 : Upskill -->
+                <div class="relative pl-8 sm:pl-12 group">
+                    <span class="absolute -left-[11px] top-6 w-5 h-5 rounded-full bg-cyan-500 ring-4 ring-slate-50 dark:ring-night-950 shadow-lg shadow-cyan-500/50 group-hover:scale-125 transition-transform"></span>
+                    
+                    <div class="glass-card rounded-2xl p-6 sm:p-8 hover:border-cyan-500/40 transition-all">
+                        <div class="flex flex-wrap items-center justify-between gap-3 mb-4">
+                            <div>
+                                <span class="inline-block px-3 py-1 rounded-full text-xs font-mono font-semibold bg-cyan-500/15 text-cyan-600 dark:text-cyan-400 mb-2">
+                                    Mai 2024 — Mai 2026
+                                </span>
+                                <h3 class="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white">
+                                    Développeur Backend &amp; Frontend
+                                </h3>
+                                <p class="text-sm font-semibold text-cyan-600 dark:text-cyan-400 mt-0.5">
+                                    Upskill — Analamahitsy
+                                </p>
+                            </div>
+                            <div class="flex items-center gap-2 text-xs font-mono text-slate-500 dark:text-slate-400 bg-slate-100 dark:bg-slate-800/80 px-3 py-1.5 rounded-lg">
+                                <i class="fa-solid fa-code-branch text-cyan-500"></i> Full-Stack &amp; Tech Lead
+                            </div>
+                        </div>
+
+                        <ul class="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm text-slate-600 dark:text-slate-300 mb-6">
+                            <li class="flex items-start gap-2.5">
+                                <i class="fa-solid fa-circle-check text-cyan-500 mt-1 shrink-0"></i>
+                                <span>Développement et maintenance du backend avec le framework <strong>Laravel</strong>.</span>
+                            </li>
+                            <li class="flex items-start gap-2.5">
+                                <i class="fa-solid fa-circle-check text-cyan-500 mt-1 shrink-0"></i>
+                                <span>Supervision de l'intégration continue du code et gestion des conflits de versions (Git / GitHub).</span>
+                            </li>
+                            <li class="flex items-start gap-2.5">
+                                <i class="fa-solid fa-circle-check text-cyan-500 mt-1 shrink-0"></i>
+                                <span>Modélisation et optimisation de bases de données relationnelles sous <strong>MySQL et PostgreSQL</strong>.</span>
+                            </li>
+                            <li class="flex items-start gap-2.5">
+                                <i class="fa-solid fa-circle-check text-cyan-500 mt-1 shrink-0"></i>
+                                <span>Administration de l'infrastructure cloud sur <strong>DigitalOcean</strong>, gestion de projet agile et leadership technique.</span>
+                            </li>
+                        </ul>
+
+                        <div class="flex flex-wrap gap-2">
+                            <span class="px-2.5 py-1 text-xs font-mono rounded-md bg-slate-200/70 dark:bg-slate-800 text-slate-700 dark:text-cyan-300">Laravel</span>
+                            <span class="px-2.5 py-1 text-xs font-mono rounded-md bg-slate-200/70 dark:bg-slate-800 text-slate-700 dark:text-cyan-300">React</span>
+                            <span class="px-2.5 py-1 text-xs font-mono rounded-md bg-slate-200/70 dark:bg-slate-800 text-slate-700 dark:text-cyan-300">PostgreSQL</span>
+                            <span class="px-2.5 py-1 text-xs font-mono rounded-md bg-slate-200/70 dark:bg-slate-800 text-slate-700 dark:text-cyan-300">MySQL</span>
+                            <span class="px-2.5 py-1 text-xs font-mono rounded-md bg-slate-200/70 dark:bg-slate-800 text-slate-700 dark:text-cyan-300">DigitalOcean</span>
+                            <span class="px-2.5 py-1 text-xs font-mono rounded-md bg-slate-200/70 dark:bg-slate-800 text-slate-700 dark:text-cyan-300">Agile / CI</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Expérience 2 : Numerika Center -->
+                <div class="relative pl-8 sm:pl-12 group">
+                    <span class="absolute -left-[11px] top-6 w-5 h-5 rounded-full bg-indigo-500 ring-4 ring-slate-50 dark:ring-night-950 shadow-lg shadow-indigo-500/50 group-hover:scale-125 transition-transform"></span>
+                    
+                    <div class="glass-card rounded-2xl p-6 sm:p-8 hover:border-indigo-500/40 transition-all">
+                        <div class="flex flex-wrap items-center justify-between gap-3 mb-4">
+                            <div>
+                                <span class="inline-block px-3 py-1 rounded-full text-xs font-mono font-semibold bg-indigo-500/15 text-indigo-600 dark:text-indigo-400 mb-2">
+                                    Avril 2022 — Avril 2024
+                                </span>
+                                <h3 class="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white">
+                                    Développeur Backend &amp; Frontend
+                                </h3>
+                                <p class="text-sm font-semibold text-indigo-600 dark:text-indigo-400 mt-0.5">
+                                    Numerika Center — Analamahitsy
+                                </p>
+                            </div>
+                            <div class="flex items-center gap-2 text-xs font-mono text-slate-500 dark:text-slate-400 bg-slate-100 dark:bg-slate-800/80 px-3 py-1.5 rounded-lg">
+                                <i class="fa-solid fa-server text-indigo-500"></i> Web &amp; Déploiement VPS
+                            </div>
+                        </div>
+
+                        <ul class="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm text-slate-600 dark:text-slate-300 mb-6">
+                            <li class="flex items-start gap-2.5">
+                                <i class="fa-solid fa-circle-check text-indigo-500 mt-1 shrink-0"></i>
+                                <span>Conception et développement du backend de la plateforme sous <strong>Laravel</strong> et développement des interfaces frontend.</span>
+                            </li>
+                            <li class="flex items-start gap-2.5">
+                                <i class="fa-solid fa-circle-check text-indigo-500 mt-1 shrink-0"></i>
+                                <span>Intégration et déploiement sécurisé des <strong>passerelles de paiement en ligne</strong>.</span>
+                            </li>
+                            <li class="flex items-start gap-2.5">
+                                <i class="fa-solid fa-circle-check text-indigo-500 mt-1 shrink-0"></i>
+                                <span>Création de modules de gestion métier (<strong>RH, stock, facturation</strong>).</span>
+                            </li>
+                            <li class="flex items-start gap-2.5">
+                                <i class="fa-solid fa-circle-check text-indigo-500 mt-1 shrink-0"></i>
+                                <span>Déploiement et maintenance sur serveurs <strong>VPS DigitalOcean</strong> et hébergements <strong>cPanel</strong>, ainsi que migrations régulières PHP/Laravel.</span>
+                            </li>
+                        </ul>
+
+                        <div class="flex flex-wrap gap-2">
+                            <span class="px-2.5 py-1 text-xs font-mono rounded-md bg-slate-200/70 dark:bg-slate-800 text-slate-700 dark:text-indigo-300">PHP / Laravel</span>
+                            <span class="px-2.5 py-1 text-xs font-mono rounded-md bg-slate-200/70 dark:bg-slate-800 text-slate-700 dark:text-indigo-300">JavaScript / jQuery</span>
+                            <span class="px-2.5 py-1 text-xs font-mono rounded-md bg-slate-200/70 dark:bg-slate-800 text-slate-700 dark:text-indigo-300">Paiement en ligne</span>
+                            <span class="px-2.5 py-1 text-xs font-mono rounded-md bg-slate-200/70 dark:bg-slate-800 text-slate-700 dark:text-indigo-300">VPS DigitalOcean</span>
+                            <span class="px-2.5 py-1 text-xs font-mono rounded-md bg-slate-200/70 dark:bg-slate-800 text-slate-700 dark:text-indigo-300">cPanel</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- 4. PROJETS PROFESSIONNELS -->
+        <section id="projets" class="py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto reveal">
+            <div class="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-4">
+                <div>
+                    <span class="font-mono text-xs uppercase tracking-widest text-cyan-500 font-semibold">03 // Réalisations</span>
+                    <h2 class="text-3xl sm:text-4xl font-bold mt-2">Projets Professionnels</h2>
+                </div>
+                <p class="text-sm text-slate-600 dark:text-slate-400 max-w-md">
+                    Applications SaaS et solutions financières conçues de l'architecture logicielle jusqu'au déploiement.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                
+                <!-- Projet 1 : Formafusion -->
+                <article class="glass-card rounded-3xl overflow-hidden flex flex-col justify-between group hover:border-indigo-500/50 transition-all duration-300 hover:-translate-y-1.5">
+                    <div>
+                        <div class="relative h-48 bg-gradient-to-br from-indigo-950 via-slate-900 to-blue-950 p-5 flex flex-col justify-between overflow-hidden">
+                            <div class="absolute inset-0 opacity-20 bg-[radial-gradient(#818cf8_1px,transparent_1px)] [background-size:16px_16px]"></div>
+                            <div class="relative z-10 flex flex-wrap items-center justify-between gap-2">
+                                <span class="px-2.5 py-1 rounded-full text-[11px] font-mono font-semibold bg-amber-500/20 text-amber-300 border border-amber-400/40 backdrop-blur-md">
+                                    <i class="fa-solid fa-trophy mr-1 text-amber-400"></i> Lauréat Miary Digital 2024
+                                </span>
+                            </div>
+
+                            <div class="relative z-10 my-auto pt-3">
+                                <div class="bg-slate-900/80 border border-indigo-500/30 rounded-xl p-3 backdrop-blur-md">
+                                    <div class="flex items-center justify-between text-[11px] text-slate-300 mb-1">
+                                        <span>Projet PIC — Incubé chez Zafitody</span>
+                                        <span class="text-indigo-400 font-mono">SaaS</span>
+                                    </div>
+                                    <div class="text-xs font-semibold text-white">Gestion intégrée de la formation</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="p-6">
+                            <div class="flex items-center justify-between gap-2 mb-2">
+                                <h3 class="text-xl font-bold text-slate-900 dark:text-white group-hover:text-indigo-400 transition-colors">
+                                    Formafusion
+                                </h3>
+                                <span class="text-[11px] font-mono text-amber-600 dark:text-amber-400 font-semibold">Projet SaaS</span>
+                            </div>
+
+                            <p class="text-sm text-slate-600 dark:text-slate-300 leading-relaxed mb-4">
+                                Plateforme SaaS collaborative dédiée à la gestion intégrée de la formation professionnelle. Lauréat 2024 du programme Miary Digital (Projet PIC) et incubé chez <strong>Zafitody</strong>.
+                            </p>
+
+                            <ul class="space-y-1.5 mb-5 text-xs text-slate-600 dark:text-slate-300">
+                                <li class="flex items-start gap-2">
+                                    <i class="fa-solid fa-check text-indigo-500 mt-0.5"></i>
+                                    <span>Conception globale de l'architecture logicielle et modélisation de la base de données.</span>
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <i class="fa-solid fa-check text-indigo-500 mt-0.5"></i>
+                                    <span>Développement Full-Stack complet (backend et interface utilisateur).</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="px-6 pb-6 pt-4 border-t border-slate-200/70 dark:border-slate-800 flex flex-wrap items-center justify-between gap-2">
+                        <div class="flex flex-wrap gap-1.5">
+                            <span class="px-2.5 py-1 rounded-md text-[11px] font-mono font-semibold bg-indigo-500/10 text-indigo-600 dark:text-indigo-400">PHP</span>
+                            <span class="px-2.5 py-1 rounded-md text-[11px] font-mono font-semibold bg-rose-500/10 text-rose-600 dark:text-rose-400">Laravel</span>
+                            <span class="px-2.5 py-1 rounded-md text-[11px] font-mono font-semibold bg-cyan-500/10 text-cyan-600 dark:text-cyan-400">React</span>
+                            <span class="px-2.5 py-1 rounded-md text-[11px] font-mono font-semibold bg-amber-500/10 text-amber-600 dark:text-amber-400">MySQL</span>
+                        </div>
+                        <button onclick="showProjectDetails('formafusion')" class="text-xs font-semibold text-indigo-600 dark:text-indigo-400 hover:underline flex items-center gap-1">
+                            <span>Détails</span>
+                            <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                        </button>
+                    </div>
+                </article>
+
+                <!-- Projet 2 : Trezocash -->
+                <article class="glass-card rounded-3xl overflow-hidden flex flex-col justify-between group hover:border-cyan-500/50 transition-all duration-300 hover:-translate-y-1.5">
+                    <div>
+                        <div class="relative h-48 bg-gradient-to-br from-slate-900 via-cyan-950 to-indigo-950 p-5 flex flex-col justify-between overflow-hidden">
+                            <div class="absolute inset-0 opacity-20 bg-[radial-gradient(#06b6d4_1px,transparent_1px)] [background-size:16px_16px]"></div>
+                            <div class="relative z-10 flex items-center justify-between">
+                                <span class="px-2.5 py-1 rounded-full text-[11px] font-mono font-semibold bg-cyan-500/20 text-cyan-300 border border-cyan-400/30 backdrop-blur-md">
+                                    <i class="fa-solid fa-coins mr-1"></i> Solution FinTech
+                                </span>
+                                <span class="text-[11px] font-mono text-slate-300 bg-black/40 px-2.5 py-0.5 rounded-md">
+                                    Temps Réel
+                                </span>
+                            </div>
+
+                            <div class="relative z-10 my-auto pt-3">
+                                <div class="bg-slate-900/80 border border-cyan-500/30 rounded-xl p-3 backdrop-blur-md">
+                                    <div class="flex items-center justify-between text-[11px] text-slate-300 mb-1">
+                                        <span>Multi-devises &amp; Multi-agences</span>
+                                        <span class="text-emerald-400 font-mono">Sécurisé</span>
+                                    </div>
+                                    <div class="text-xs font-semibold text-white">Suivi centralisé de trésorerie</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="p-6">
+                            <div class="flex items-center justify-between gap-2 mb-2">
+                                <h3 class="text-xl font-bold text-slate-900 dark:text-white group-hover:text-cyan-500 transition-colors">
+                                    Trezocash
+                                </h3>
+                                <span class="text-[11px] font-mono text-slate-500 dark:text-slate-400">Gestion Financière</span>
+                            </div>
+
+                            <p class="text-sm text-slate-600 dark:text-slate-300 leading-relaxed mb-4">
+                                Plateforme centralisée de suivi de trésorerie en temps réel, conçue pour une gestion multi-devises et multi-agences avec sécurisation avancée des transactions.
+                            </p>
+
+                            <ul class="space-y-1.5 mb-5 text-xs text-slate-600 dark:text-slate-300">
+                                <li class="flex items-start gap-2">
+                                    <i class="fa-solid fa-check text-cyan-500 mt-0.5"></i>
+                                    <span>Implémentation des modules de gestion des flux de caisse et de rapprochement bancaire automatique.</span>
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <i class="fa-solid fa-check text-cyan-500 mt-0.5"></i>
+                                    <span>Déploiement d'outils de génération de rapports financiers dynamiques.</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="px-6 pb-6 pt-4 border-t border-slate-200/70 dark:border-slate-800 flex flex-wrap items-center justify-between gap-2">
+                        <div class="flex flex-wrap gap-1.5">
+                            <span class="px-2.5 py-1 rounded-md text-[11px] font-mono font-semibold bg-indigo-500/10 text-indigo-600 dark:text-indigo-400">PHP</span>
+                            <span class="px-2.5 py-1 rounded-md text-[11px] font-mono font-semibold bg-rose-500/10 text-rose-600 dark:text-rose-400">Laravel</span>
+                            <span class="px-2.5 py-1 rounded-md text-[11px] font-mono font-semibold bg-cyan-500/10 text-cyan-600 dark:text-cyan-400">React</span>
+                            <span class="px-2.5 py-1 rounded-md text-[11px] font-mono font-semibold bg-blue-500/10 text-blue-600 dark:text-blue-400">PostgreSQL</span>
+                        </div>
+                        <button onclick="showProjectDetails('trezocash')" class="text-xs font-semibold text-cyan-600 dark:text-cyan-400 hover:underline flex items-center gap-1">
+                            <span>Détails</span>
+                            <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                        </button>
+                    </div>
+                </article>
+
+                <!-- Projet 3 : LGCFP -->
+                <article class="glass-card rounded-3xl overflow-hidden flex flex-col justify-between group hover:border-blue-500/50 transition-all duration-300 hover:-translate-y-1.5">
+                    <div>
+                        <div class="relative h-48 bg-gradient-to-br from-blue-950 via-slate-900 to-cyan-950 p-5 flex flex-col justify-between overflow-hidden">
+                            <div class="absolute inset-0 opacity-20 bg-[radial-gradient(#3b82f6_1px,transparent_1px)] [background-size:16px_16px]"></div>
+                            <div class="relative z-10 flex items-center justify-between">
+                                <span class="px-2.5 py-1 rounded-full text-[11px] font-mono font-semibold bg-blue-500/20 text-blue-300 border border-blue-400/30 backdrop-blur-md">
+                                    <i class="fa-solid fa-folder-open mr-1"></i> Plateforme SaaS
+                                </span>
+                                <span class="text-[11px] font-mono text-slate-300 bg-black/40 px-2.5 py-0.5 rounded-md">
+                                    Dossiers FMFP
+                                </span>
+                            </div>
+
+                            <div class="relative z-10 my-auto pt-3">
+                                <div class="bg-slate-900/80 border border-blue-500/30 rounded-xl p-3 backdrop-blur-md">
+                                    <div class="flex items-center justify-between text-[11px] text-slate-300 mb-1">
+                                        <span>Fonds Malgache de Formation Pro</span>
+                                        <span class="text-blue-400 font-mono">Workflow</span>
+                                    </div>
+                                    <div class="text-xs font-semibold text-white">Suivi et gestion des dossiers FMFP</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="p-6">
+                            <div class="flex items-center justify-between gap-2 mb-2">
+                                <h3 class="text-xl font-bold text-slate-900 dark:text-white group-hover:text-blue-400 transition-colors">
+                                    LGCFP
+                                </h3>
+                                <span class="text-[11px] font-mono text-slate-500 dark:text-slate-400">Gestion FMFP</span>
+                            </div>
+
+                            <p class="text-sm text-slate-600 dark:text-slate-300 leading-relaxed mb-4">
+                                Plateforme SaaS dédiée à la gestion, la centralisation et le suivi administratif et financier des dossiers de formation professionnelle (FMFP).
+                            </p>
+
+                            <ul class="space-y-1.5 mb-5 text-xs text-slate-600 dark:text-slate-300">
+                                <li class="flex items-start gap-2">
+                                    <i class="fa-solid fa-check text-blue-500 mt-0.5"></i>
+                                    <span>Suivi structuré de l'avancement des dossiers, pièces justificatives et validation des étapes.</span>
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <i class="fa-solid fa-check text-blue-500 mt-0.5"></i>
+                                    <span>Génération de rapports dynamiques et sécurisation des accès utilisateurs.</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="px-6 pb-6 pt-4 border-t border-slate-200/70 dark:border-slate-800 flex flex-wrap items-center justify-between gap-2">
+                        <div class="flex flex-wrap gap-1.5">
+                            <span class="px-2.5 py-1 rounded-md text-[11px] font-mono font-semibold bg-indigo-500/10 text-indigo-600 dark:text-indigo-400">PHP</span>
+                            <span class="px-2.5 py-1 rounded-md text-[11px] font-mono font-semibold bg-rose-500/10 text-rose-600 dark:text-rose-400">Laravel</span>
+                            <span class="px-2.5 py-1 rounded-md text-[11px] font-mono font-semibold bg-purple-500/10 text-purple-600 dark:text-purple-400">Bootstrap</span>
+                            <span class="px-2.5 py-1 rounded-md text-[11px] font-mono font-semibold bg-amber-500/10 text-amber-600 dark:text-amber-400">MySQL</span>
+                        </div>
+                        <button onclick="showProjectDetails('lgcfp')" class="text-xs font-semibold text-blue-600 dark:text-blue-400 hover:underline flex items-center gap-1">
+                            <span>Détails</span>
+                            <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                        </button>
+                    </div>
+                </article>
+
+            </div>
+        </section>
+
+        <!-- 5. COMPÉTENCES TECHNIQUES -->
+        <section id="competences" class="py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto reveal">
+            <div class="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-4">
+                <div>
+                    <span class="font-mono text-xs uppercase tracking-widest text-cyan-500 font-semibold">04 // Stack Technique</span>
+                    <h2 class="text-3xl sm:text-4xl font-bold mt-2">Compétences Techniques</h2>
+                </div>
+                <p class="text-sm text-slate-600 dark:text-slate-400 max-w-md">
+                    Filtrez par catégorie pour explorer les langages, frameworks, bases de données et outils DevOps maîtrisés.
+                </p>
+            </div>
+
+            <!-- Boutons de filtrage -->
+            <div id="skill-filters" class="flex flex-wrap gap-2.5 mb-10 no-print">
+                <button data-filter="all" class="filter-btn active px-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold bg-gradient-to-r from-cyan-500 to-indigo-600 text-white shadow-md shadow-cyan-500/20 transition-all">
+                    Toutes les compétences
+                </button>
+                <button data-filter="backend" class="filter-btn px-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold glass-card text-slate-700 dark:text-slate-300 hover:border-cyan-500/40 transition-all">
+                    <i class="fa-solid fa-server mr-1.5 text-cyan-500"></i> Backend
+                </button>
+                <button data-filter="frontend" class="filter-btn px-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold glass-card text-slate-700 dark:text-slate-300 hover:border-cyan-500/40 transition-all">
+                    <i class="fa-solid fa-laptop-code mr-1.5 text-indigo-500"></i> Frontend
+                </button>
+                <button data-filter="database" class="filter-btn px-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold glass-card text-slate-700 dark:text-slate-300 hover:border-cyan-500/40 transition-all">
+                    <i class="fa-solid fa-database mr-1.5 text-blue-500"></i> Bases de données &amp; Modélisation
+                </button>
+                <button data-filter="devops" class="filter-btn px-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold glass-card text-slate-700 dark:text-slate-300 hover:border-cyan-500/40 transition-all">
+                    <i class="fa-solid fa-cloud mr-1.5 text-emerald-500"></i> DevOps, Versioning &amp; API
+                </button>
+            </div>
+
+            <!-- Grille dynamique des compétences -->
+            <div id="skills-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5"></div>
+        </section>
+
+        <!-- 6. SECTION CONTACT -->
+        <section id="contact" class="py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto reveal">
+            <div class="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-4">
+                <div>
+                    <span class="font-mono text-xs uppercase tracking-widest text-cyan-500 font-semibold">05 // Collaboration</span>
+                    <h2 class="text-3xl sm:text-4xl font-bold mt-2">Me Contacter</h2>
+                </div>
+                <p class="text-sm text-slate-600 dark:text-slate-400 max-w-md">
+                    Un projet web, une opportunité Full-Stack ou un besoin d'accompagnement technique ? Contactez-moi directement.
+                </p>
+            </div>
+
+            <div class="max-w-4xl mx-auto">
+                <div class="glass-card rounded-2xl p-6 sm:p-8 space-y-6">
+                    <div class="space-y-2">
+                        <h3 class="text-xl font-bold">Coordonnées Directes</h3>
+                        <p class="text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
+                            Disponible pour des opportunités professionnelles en tant que Développeur Full-Stack (Laravel / Symfony / React) ou des missions de développement sur mesure.
+                        </p>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-5 pt-2">
+                        <div class="p-4 rounded-xl bg-slate-100/70 dark:bg-slate-800/50 flex items-start gap-3.5">
+                            <div class="w-10 h-10 rounded-xl bg-cyan-500/15 text-cyan-500 flex items-center justify-center shrink-0">
+                                <i class="fa-solid fa-location-dot text-base"></i>
+                            </div>
+                            <div>
+                                <div class="text-xs text-slate-500 dark:text-slate-400">Adresse</div>
+                                <div class="text-sm font-semibold mt-0.5">Lot 2 MI Ter/A Anosy Avaratra, Antananarivo</div>
+                            </div>
+                        </div>
+
+                        <a href="mailto:sarobidymbolatiana@gmail.com" class="p-4 rounded-xl bg-slate-100/70 dark:bg-slate-800/50 flex items-start gap-3.5 group hover:border-cyan-500/40 border border-transparent transition-all">
+                            <div class="w-10 h-10 rounded-xl bg-indigo-500/15 text-indigo-500 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
+                                <i class="fa-solid fa-envelope text-base"></i>
+                            </div>
+                            <div class="min-w-0">
+                                <div class="text-xs text-slate-500 dark:text-slate-400">Email</div>
+                                <div class="text-sm font-semibold font-mono mt-0.5 break-all group-hover:text-cyan-500 transition-colors">sarobidymbolatiana@gmail.com</div>
+                            </div>
+                        </a>
+
+                        <a href="tel:+261343296712" class="p-4 rounded-xl bg-slate-100/70 dark:bg-slate-800/50 flex items-start gap-3.5 group hover:border-emerald-500/40 border border-transparent transition-all">
+                            <div class="w-10 h-10 rounded-xl bg-emerald-500/15 text-emerald-500 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
+                                <i class="fa-solid fa-phone text-base"></i>
+                            </div>
+                            <div>
+                                <div class="text-xs text-slate-500 dark:text-slate-400">Téléphone</div>
+                                <div class="text-sm font-semibold font-mono mt-0.5 group-hover:text-emerald-400 transition-colors">034 32 967 12</div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="relative z-10 border-t border-slate-200/80 dark:border-slate-800/80 py-10 px-4 sm:px-6 lg:px-8 mt-12">
+        <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500 dark:text-slate-400">
+            <div class="flex items-center gap-2">
+                <span class="font-mono font-bold text-slate-800 dark:text-slate-200">Sarobidy Mbolatianasoa Raveloniaina</span>
+                <span>— Développeur Full-Stack • Madagascar</span>
+            </div>
+            <div class="flex items-center gap-4">
+                <a href="cv.pdf" class="hover:text-cyan-500 transition-colors">Télécharger CV</a>
+                <span>•</span>
+                <a href="#accueil" class="hover:text-cyan-500 transition-colors">Haut de page <i class="fa-solid fa-arrow-up ml-1"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- MODALE : APERÇU RAPIDE CV & EXPORT PDF -->
+    <div id="cv-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-slate-950/75 backdrop-blur-md no-print">
+        <div class="bg-white dark:bg-night-900 border border-slate-200 dark:border-cyan-500/30 rounded-3xl max-w-3xl w-full max-h-[90vh] overflow-y-auto shadow-2xl p-6 sm:p-8 relative">
+            <div class="flex items-center justify-between pb-4 mb-6 border-b border-slate-200 dark:border-slate-800 sticky top-0 bg-white dark:bg-night-900 z-10">
+                <div class="flex items-center gap-3">
+                    <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-cyan-500 to-indigo-600 text-white flex items-center justify-center font-bold">
+                        CV
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-lg">Sarobidy Mbolatianasoa Raveloniaina</h3>
+                        <p class="text-xs text-slate-500 dark:text-slate-400">Développeur Full-Stack — 4 ans d'expérience</p>
+                    </div>
+                </div>
+                <div class="flex items-center gap-2">
+                    <a href="cv.pdf" class="px-4 py-2 rounded-xl text-xs font-semibold bg-gradient-to-r from-cyan-500 to-indigo-600 text-white shadow hover:opacity-95 transition-all flex items-center gap-1.5">
+                        <i class="fa-solid fa-print"></i>
+                        <span>Imprimer / PDF</span>
+                    </a>
+                    <button onclick="closeCvModal()" aria-label="Fermer" class="w-9 h-9 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-rose-500 hover:text-white transition-colors">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="space-y-6 text-sm">
+                <div class="p-4 rounded-2xl bg-slate-100/80 dark:bg-slate-800/60 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                    <div>
+                        <h4 class="text-lg font-extrabold text-gradient">Développeur Web Full-Stack</h4>
+                        <p class="text-xs text-slate-600 dark:text-slate-300 mt-1">
+                            <i class="fa-solid fa-location-dot text-cyan-500 mr-1"></i> Lot 2 MI Ter/A Anosy Avaratra • <i class="fa-solid fa-phone text-cyan-500 mx-1"></i> 034 32 967 12 • sarobidymbolatiana@gmail.com
+                        </p>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <h5 class="font-mono text-xs uppercase tracking-wider text-cyan-500 font-bold mb-3">Expériences Professionnelles</h5>
+                        <ul class="space-y-3 text-xs">
+                            <li class="p-3 rounded-xl border border-slate-200 dark:border-slate-800">
+                                <div class="font-bold text-slate-900 dark:text-white">Développeur Backend &amp; Frontend — Upskill</div>
+                                <div class="text-cyan-600 dark:text-cyan-400 font-mono text-[11px]">Mai 2024 - Mai 2026 | Analamahitsy</div>
+                                <div class="text-slate-500 dark:text-slate-400 mt-1">Laravel, CI/Git, MySQL/PostgreSQL, Cloud DigitalOcean, gestion agile &amp; leadership technique.</div>
+                            </li>
+                            <li class="p-3 rounded-xl border border-slate-200 dark:border-slate-800">
+                                <div class="font-bold text-slate-900 dark:text-white">Développeur Backend &amp; Frontend — Numerika Center</div>
+                                <div class="text-indigo-600 dark:text-indigo-400 font-mono text-[11px]">Avril 2022 - Avril 2024 | Analamahitsy</div>
+                                <div class="text-slate-500 dark:text-slate-400 mt-1">Laravel, passerelles de paiement, modules RH/stock/facturation, VPS DigitalOcean &amp; cPanel.</div>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="space-y-4">
+                        <div>
+                            <h5 class="font-mono text-xs uppercase tracking-wider text-indigo-500 font-bold mb-3">Formations</h5>
+                            <ul class="space-y-2 text-xs">
+                                <li class="p-2.5 rounded-xl border border-slate-200 dark:border-slate-800">
+                                    <div class="font-bold">2023 — Master II en Informatique</div>
+                                    <div class="text-slate-500 dark:text-slate-400">Base de données et génie logiciel (IS-INFO Ampasamadinika)</div>
+                                </li>
+                                <li class="p-2.5 rounded-xl border border-slate-200 dark:border-slate-800">
+                                    <div class="font-bold">2021 — Licence en Informatique</div>
+                                    <div class="text-slate-500 dark:text-slate-400">Informatique de gestion (IS-INFO Ampasamadinika)</div>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div>
+                            <h5 class="font-mono text-xs uppercase tracking-wider text-amber-500 font-bold mb-2">Projets Clés</h5>
+                            <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
+                                <strong>Formafusion</strong> (SaaS formation pro, Lauréat Miary Digital 2024 - Zafitody), <strong>Trezocash</strong> (FinTech trésorerie multi-devises) &amp; <strong>LGCFP</strong> (SaaS suivi dossiers FMFP).
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODALE DÉTAILS TECHNIQUES PROJETS -->
+    <div id="project-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-slate-950/75 backdrop-blur-md no-print">
+        <div class="bg-white dark:bg-night-900 border border-slate-200 dark:border-cyan-500/30 rounded-3xl max-w-xl w-full p-6 sm:p-8 shadow-2xl relative">
+            <div class="flex items-center justify-between pb-4 mb-4 border-b border-slate-200 dark:border-slate-800">
+                <h3 id="project-modal-title" class="text-xl font-bold text-gradient">Titre du Projet</h3>
+                <button onclick="closeProjectModal()" aria-label="Fermer" class="w-9 h-9 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-rose-500 hover:text-white transition-colors">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <div id="project-modal-body" class="space-y-4 text-sm text-slate-600 dark:text-slate-300 leading-relaxed"></div>
+            <div class="mt-6 pt-4 border-t border-slate-200 dark:border-slate-800 flex justify-end">
+                <button onclick="closeProjectModal()" class="px-5 py-2.5 rounded-xl text-xs font-semibold bg-slate-200 dark:bg-slate-800 hover:bg-cyan-500 hover:text-white transition-colors">
+                    Fermer l'aperçu
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- SCRIPTS JAVASCRIPT -->
+    <script>
+        /**
+         * 1. Compétences Techniques
+         */
+        const skillsData = [
+            // Développement Backend
+            { name: "PHP", category: "backend", level: "Backend", icon: "fa-brands fa-php", color: "text-indigo-400", desc: "Développement orienté objet, migrations de versions et architectures modulaires" },
+            { name: "Laravel", category: "backend", level: "Backend", icon: "fa-brands fa-laravel", color: "text-rose-500", desc: "Conception d'applications web, API REST, passerelles de paiement et plateformes SaaS" },
+            { name: "Symfony", category: "backend", level: "Backend", icon: "fa-brands fa-symfony", color: "text-slate-300", desc: "Développement backend structuré et composants métiers robustes" },
+            { name: "Java", category: "backend", level: "Backend", icon: "fa-brands fa-java", color: "text-amber-500", desc: "Programmation orientée objet et développement logiciel" },
+
+            // Développement Frontend
+            { name: "JavaScript", category: "frontend", level: "Frontend", icon: "fa-brands fa-js", color: "text-yellow-400", desc: "Logique client interactive, programmation asynchrone et ES6+" },
+            { name: "React", category: "frontend", level: "Frontend", icon: "fa-brands fa-react", color: "text-cyan-400", desc: "Interfaces utilisateurs modernes et réactives pour plateformes SaaS et FinTech" },
+            { name: "Bootstrap", category: "frontend", level: "Frontend", icon: "fa-brands fa-bootstrap", color: "text-purple-400", desc: "Intégration responsive rapide et interfaces web adaptatives" },
+            { name: "Ajax & jQuery", category: "frontend", level: "Frontend", icon: "fa-solid fa-bolt", color: "text-blue-400", desc: "Requêtes asynchrones, dynamisation d'interfaces et maintenance applicative" },
+
+            // Bases de données & Modélisation
+            { name: "MySQL", category: "database", level: "Base de données", icon: "fa-solid fa-database", color: "text-amber-400", desc: "Conception relationnelle, requêtes complexes et optimisation des performances" },
+            { name: "PostgreSQL", category: "database", level: "Base de données", icon: "fa-solid fa-server", color: "text-blue-400", desc: "Bases de données transactionnelles critiques et intégrité des données" },
+            { name: "UML", category: "database", level: "Modélisation", icon: "fa-solid fa-diagram-project", color: "text-indigo-400", desc: "Modélisation d'architecture logicielle, cas d'utilisation et diagrammes de classes" },
+
+            // DevOps, Cloud, Versioning & Tests API
+            { name: "DigitalOcean", category: "devops", level: "DevOps & Cloud", icon: "fa-brands fa-digital-ocean", color: "text-sky-400", desc: "Administration d'infrastructure cloud et déploiement sur serveurs VPS" },
+            { name: "CyberPanel & Linux (Ubuntu)", category: "devops", level: "DevOps & Cloud", icon: "fa-brands fa-ubuntu", color: "text-orange-500", desc: "Configuration serveur Ubuntu, gestion d'hébergements web et sécurité" },
+            { name: "Git & GitHub", category: "devops", level: "Versioning", icon: "fa-brands fa-git-alt", color: "text-rose-400", desc: "Intégration continue du code, gestion des branches et résolution de conflits" },
+            { name: "Postman & Insomnia", category: "devops", level: "Test API", icon: "fa-solid fa-vial-circle-check", color: "text-emerald-400", desc: "Tests fonctionnels, débogage et validation d'endpoints API" }
+        ];
+
+        const skillsGrid = document.getElementById('skills-grid');
+        const filterButtons = document.querySelectorAll('.filter-btn');
+
+        function renderSkills(filterCategory = 'all') {
+            skillsGrid.innerHTML = '';
+            const filtered = filterCategory === 'all' 
+                ? skillsData 
+                : skillsData.filter(skill => skill.category === filterCategory);
+
+            filtered.forEach((skill) => {
+                const card = document.createElement('div');
+                card.className = 'glass-card rounded-2xl p-5 hover:border-cyan-500/40 hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between';
+                card.innerHTML = `
+                    <div>
+                        <div class="flex items-center justify-between mb-3">
+                            <div class="w-10 h-10 rounded-xl bg-slate-200/70 dark:bg-slate-800/90 flex items-center justify-center text-xl ${skill.color}">
+                                <i class="${skill.icon}"></i>
+                            </div>
+                            <span class="text-[11px] font-mono px-2.5 py-0.5 rounded-full bg-cyan-500/10 text-cyan-600 dark:text-cyan-400 border border-cyan-500/20">
+                                ${skill.level}
+                            </span>
+                        </div>
+                        <h3 class="font-bold text-base text-slate-900 dark:text-white mb-1.5">${skill.name}</h3>
+                        <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">${skill.desc}</p>
+                    </div>
+                `;
+                skillsGrid.appendChild(card);
+            });
+        }
+
+        filterButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                filterButtons.forEach(b => {
+                    b.classList.remove('active', 'bg-gradient-to-r', 'from-cyan-500', 'to-indigo-600', 'text-white', 'shadow-md');
+                    b.classList.add('glass-card', 'text-slate-700', 'dark:text-slate-300');
+                });
+                btn.classList.add('active', 'bg-gradient-to-r', 'from-cyan-500', 'to-indigo-600', 'text-white', 'shadow-md');
+                btn.classList.remove('glass-card', 'text-slate-700', 'dark:text-slate-300');
+
+                renderSkills(btn.getAttribute('data-filter'));
+            });
+        });
+
+        renderSkills('all');
+
+        /**
+         * 2. Gestion du Thème Dark Mode / Light Mode
+         */
+        const themeToggleBtn = document.getElementById('theme-toggle');
+        const themeIcon = document.getElementById('theme-icon');
+        const htmlElement = document.documentElement;
+
+        const savedTheme = localStorage.getItem('portfolio-theme');
+        if (savedTheme === 'light') {
+            htmlElement.classList.remove('dark');
+            themeIcon.classList.replace('fa-sun', 'fa-moon');
+        } else {
+            htmlElement.classList.add('dark');
+            themeIcon.classList.replace('fa-moon', 'fa-sun');
+        }
+
+        themeToggleBtn.addEventListener('click', () => {
+            htmlElement.classList.toggle('dark');
+            const isDark = htmlElement.classList.contains('dark');
+            if (isDark) {
+                themeIcon.classList.replace('fa-moon', 'fa-sun');
+                localStorage.setItem('portfolio-theme', 'dark');
+            } else {
+                themeIcon.classList.replace('fa-sun', 'fa-moon');
+                localStorage.setItem('portfolio-theme', 'light');
+            }
+        });
+
+        /**
+         * 3. Menu Mobile
+         */
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const mobileLinks = document.querySelectorAll('.mobile-link');
+
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        mobileLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
+            });
+        });
+
+        /**
+         * 4. Animations au défilement
+         */
+        const revealElements = document.querySelectorAll('.reveal');
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        revealElements.forEach(el => revealObserver.observe(el));
+
+        /**
+         * 5. Modale Vue Rapide CV & Export PDF
+         */
+        const cvModal = document.getElementById('cv-modal');
+
+        function openCvModal() {
+            cvModal.classList.remove('hidden');
+            cvModal.classList.add('flex');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeCvModal() {
+            cvModal.classList.add('hidden');
+            cvModal.classList.remove('flex');
+            document.body.style.overflow = '';
+        }
+
+        function exportToPDF() {
+            document.querySelectorAll('.reveal').forEach(el => el.classList.add('active'));
+            window.print();
+        }
+
+        /**
+         * 6. Modale Détails Techniques des Projets
+         */
+        const projectModal = document.getElementById('project-modal');
+        const projectModalTitle = document.getElementById('project-modal-title');
+        const projectModalBody = document.getElementById('project-modal-body');
+
+        const projectDetailsMap = {
+            formafusion: {
+                title: "Formafusion — Projet SaaS (Lauréat Miary Digital 2024)",
+                content: `
+                    <p><strong>Contexte :</strong> Lauréat 2024 du programme Miary Digital (Projet PIC) et incubé chez <strong>Zafitody</strong>.</p>
+                    <ul class="list-disc pl-5 space-y-2 mt-3">
+                        <li><strong>Description :</strong> Plateforme SaaS collaborative dédiée à la gestion intégrée de la formation professionnelle.</li>
+                        <li><strong>Réalisations techniques :</strong> Conception globale de l'architecture logicielle, modélisation de la base de données relationnelle et développement Full-Stack (backend et interface utilisateur).</li>
+                        <li><strong>Stack technique :</strong> PHP, Laravel, React, MySQL.</li>
+                    </ul>
+                `
+            },
+            trezocash: {
+                title: "Trezocash — Solution FinTech / Gestion Financière",
+                content: `
+                    <p><strong>Description :</strong> Plateforme centralisée de suivi de trésorerie en temps réel, adaptée à une gestion multi-devises et multi-agences.</p>
+                    <ul class="list-disc pl-5 space-y-2 mt-3">
+                        <li><strong>Flux & Rapprochement :</strong> Implémentation des modules de gestion des flux de caisse et de rapprochement bancaire automatique.</li>
+                        <li><strong>Reporting & Sécurité :</strong> Déploiement d'outils de génération de rapports financiers dynamiques et sécurisation des transactions.</li>
+                        <li><strong>Stack technique :</strong> PHP, Laravel, React, PostgreSQL.</li>
+                    </ul>
+                `
+            },
+            lgcfp: {
+                title: "LGCFP — Solution de suivi de dossiers FMFP",
+                content: `
+                    <p><strong>Description :</strong> Plateforme SaaS de gestion et de suivi des dossiers du Fonds Malgache de Formation Professionnelle (FMFP).</p>
+                    <ul class="list-disc pl-5 space-y-2 mt-3">
+                        <li><strong>Réalisations techniques :</strong> Centralisation des dossiers de financement, suivi des étapes de validation et génération de rapports dynamiques.</li>
+                        <li><strong>Sécurité :</strong> Contrôle des accès utilisateurs et traçabilité des opérations.</li>
+                        <li><strong>Stack technique :</strong> PHP, Laravel, Bootstrap, MySQL.</li>
+                    </ul>
+                `
+            }
+        };
+
+        function showProjectDetails(key) {
+            const data = projectDetailsMap[key];
+            if (!data) return;
+            projectModalTitle.textContent = data.title;
+            projectModalBody.innerHTML = data.content;
+            projectModal.classList.remove('hidden');
+            projectModal.classList.add('flex');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeProjectModal() {
+            projectModal.classList.add('hidden');
+            projectModal.classList.remove('flex');
+            document.body.style.overflow = '';
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closeCvModal();
+                closeProjectModal();
+            }
+        });
+    </script>
+</body>
+</html>
